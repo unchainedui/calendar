@@ -360,7 +360,12 @@
     }
   }
 
+  function isValidDate(date) {
+    return date instanceof Date && !isNaN(date);
+  }
+
   var defaultLocale = {
+    code: 'en-US',
     weekStarts: 0, /*Sunday*/
     months: {
       narrow: [ 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D' ],
@@ -398,7 +403,7 @@
     this.events = {};
     this.init();
 
-    this.value(new Date(), true);
+    this.value(opts.value || new Date(), true);
     this.addListeners();
     this.setMode(opts.mode || 'days');
   };
@@ -426,11 +431,11 @@
         off(this.el, 'click', this.events.onAClick);
       },
 
-      render: function() {
+      render: function({ back, forward }) {
         const header = `<nav class="calendar-header">
-        <a class="calendar-button calendar-back" href="#/back" title="Back"><<</a>
+        <a class="calendar-button calendar-back" href="#/back" title="Back">${back || '<'}</a>
         <a class="calendar-mode" href="#/set-mode"></a>
-        <a class="calendar-button calendar-forward" href="#/forward" title="Forward">>></a>
+        <a class="calendar-button calendar-forward" href="#/forward" title="Forward">${forward || '>'}</a>
       </nav>`;
 
         let html$$1 = '<div class="calendar-display"></div>';
@@ -444,17 +449,17 @@
       },
 
       back: function() {
-        const state = this.state.display;
+        const display = this.state.display;
 
         switch (this.mode) {
           case 'days':
-            this.state.display = prevMonth(state);
+            this.state.display = prevMonth(display);
             break;
           case 'months':
-            this.state.display = prevYear(state);
+            this.state.display = prevYear(display);
             break;
           case 'years':
-            this.state.display = prevYears(state);
+            this.state.display = prevYears(display);
             break;
         }
 
@@ -462,17 +467,17 @@
       },
 
       forward: function() {
-        const state = this.state.display;
+        const display = this.state.display;
 
         switch (this.mode) {
           case 'days':
-            this.state.display = nextMonth(state);
+            this.state.display = nextMonth(display);
             break;
           case 'months':
-            this.state.display = nextYear(state);
+            this.state.display = nextYear(display);
             break;
           case 'years':
-            this.state.display = nextYears(state);
+            this.state.display = nextYears(display);
             break;
         }
 
@@ -575,15 +580,20 @@
         return year === this.state.selected.year;
       },
 
-      parse: function(str) {
-        return new Date(str);
+      parse: function(value) {
+        const date = new Date(value);
+        if (isValidDate(date)) {
+          return date;
+        }
+
+        throw date;
       },
 
       toString: function() {
-        return this.state.date.toString();
+        return this.state.date.toLocaleDateString(this.locale.code);
       },
 
-      value: function(value, noFeedback) {
+      value: function(value, silent) {
         if (value === undefined) {
           return this.state.date;
         }
@@ -603,7 +613,7 @@
           this.setMode('months', true);
         } else {
           this.setMode('days', true);
-          !noFeedback && this.onChange(this.state.date);
+          !silent && this.onChange(this.state.date);
         }
 
         return this;

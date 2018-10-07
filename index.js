@@ -5,7 +5,7 @@ import { toCamelCase } from 'uc-strings';
 
 import { SHOW_YEARS, getStartYear, daysInMonth, prevMonth, nextMonth, prevYear, nextYear, prevYears, nextYears, isValidDate } from './dates';
 
-import defaultLocale from './en_US';
+import defaultLocale from './locale/en-US';
 
 function parseDecimal(str) {
   return parseInt(str, 10);
