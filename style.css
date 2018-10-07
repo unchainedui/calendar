@@ -1,0 +1,96 @@
+$calendar-font-size:         $uiFontSize;
+$calendar-font-family:       $uiFontFamily;
+$calendar-color:             $uiColor;
+$calendar-active-color:      $uiActiveColor;
+$calendar-bg-color:          $uiBgColor;
+$calendar-cell-height:       $uiCalendarCellHeight;
+$calendar-padding:           $uiCalendarPadding;
+$calendar-animation-style:   $uiBaseTransition;
+$calendar-animation-time:    $uiBaseTransitionDuration;
+$calendar-uppercase:         $uiCalendarUppercase;
+
+.calendar {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  padding: calc(2*$calendar-padding) $calendar-padding;
+  box-sizing: border-box;
+  font: normal $calendar-font-size $calendar-font-family;
+  background: $calendar-bg-color;
+
+  @if $calendar-uppercase == true {
+    text-transform: uppercase;
+  }
+
+  a {
+    text-decoration: none;
+    color: $calendar-color;
+  }
+}
+
+.calendar-header {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.75em;
+}
+
+.calendar-flip {
+  padding-top: 0.75em;
+  .calendar-header {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+}
+
+.calendar-button,
+.calendar-mode {
+  display: block;
+  text-align: center;
+}
+
+.calendar-back,
+.calendar-forward {
+}
+
+.calendar-mode {
+  flex-grow: 1;
+}
+
+.calendar-display {
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(6*$calendar-cell-height);
+  display: flex;
+  justify-content: center;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    /*align-items: center;*/
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: $calendar-cell-height;
+  }
+}
+
+.calendar-days {
+  align-self: flex-start;
+  li { width: 14.28%; }
+}
+.calendar-months li { width: 25%; }
+.calendar-years li { width: 20%; }
+
+.calendar-current {
+  a {
+    color: $calendar-active-color;
+    font-weight: bold;
+  }
+}
