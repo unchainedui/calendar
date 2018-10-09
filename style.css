@@ -88,9 +88,6 @@ $calendar-uppercase:         $uiCalendarUppercase;
 .calendar-months li { width: 25%; }
 .calendar-years li { width: 20%; }
 
-.calendar-current {
-  a {
-    color: $calendar-active-color;
-    font-weight: bold;
-  }
+.calendar-current a {
+  color: $calendar-active-color;
 }
